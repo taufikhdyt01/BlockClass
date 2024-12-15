@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->boolean('is_done')->default(false);
-            $table->decimal('score', 5, 2)->nullable();
             $table->timestamps();
         });
     }

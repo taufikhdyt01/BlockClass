@@ -12,7 +12,6 @@ class Post extends Model
         'type',
         'access',
         'required_post_id',
-        'points',
         'order'
     ];
 
@@ -49,7 +48,7 @@ class Post extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_posts')
-                ->withPivot('is_done', 'score')
+                ->withPivot('is_done')
                 ->withTimestamps();
     }
 }

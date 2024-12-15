@@ -21,6 +21,7 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 Route::post('/reset-password', [NewPasswordController::class, 'store']);
 Route::middleware('optional.auth')->group(function () {
     Route::get('challenges', [ChallengeController::class, 'index']);
+    Route::get('classes', [ClassController::class, 'index'])->name('classes.index');
 });
 Route::get('/leaderboard', [LeaderboardController::class, 'getOverallLeaderboard']);
 
@@ -33,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/challenges/{slug}/leaderboard', [LeaderboardController::class, 'getChallengeLeaderboard']);
     Route::get('/user/profile', [UserController::class, 'getProfile']);
     Route::post('/user/profile/update', [UserController::class, 'updateProfile']);
-    Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
+    
     Route::post('/classes', [ClassController::class, 'store']);
     Route::put('/classes/{class}', [ClassController::class, 'update']);
     Route::delete('/classes/{class}', [ClassController::class, 'destroy']);
