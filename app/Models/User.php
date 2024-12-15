@@ -28,7 +28,6 @@ class User extends Authenticatable
         'role',
     ];
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -60,5 +59,43 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    public function classes()
+    {
+        return $this->belongsToMany(ClassRoom::class, 'user_classes')
+                ->withTimestamps();
+    }
+
+    public function assignmentSubmissions()
+    {
+        return $this->hasMany(AssignmentSubmission::class);
+    }
+
+    public function forumPosts()
+    {
+        return $this->hasMany(ForumPost::class);
+    }
+
+    public function forumComments()
+    {
+        return $this->hasMany(ForumComment::class);
+    }
+
+    public function practiceSubmissions()
+    {
+        return $this->hasMany(PracticeSubmission::class);
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'user_posts')
+        ->withPivot('is_done', 'score')
+        ->withTimestamps();
+    }
+
+    public function classRooms()
+    {
+        return $this->belongsToMany(ClassRoom::class, 'user_classes');
     }
 }

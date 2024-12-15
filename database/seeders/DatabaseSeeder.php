@@ -13,20 +13,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        User::create([
-            'name' => 'Admin User',
-            'username' => 'admin',
-            'email' => 'admin@e-block.com',
-            'password' => bcrypt('password'),
-            'role' => 'admin',
-        ]);
-
         $this->call([
             ChallengeSeeder::class,
             AdditionalChallengeSeeder::class,
             WebProgrammingChallengeSeeder::class,
-            WebEasyChallengeSeeder::class
+            WebEasyChallengeSeeder::class,
+            UsersTableSeeder::class,
+            ClassesTableSeeder::class,
         ]);
     }
 }

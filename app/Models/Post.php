@@ -49,7 +49,7 @@ class Post extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_posts')
-            ->withPivot('is_done', 'score')
-            ->withTimestamps();
+                ->withPivot('is_done', 'score')
+                ->withTimestamps();
     }
 }

@@ -33,7 +33,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Password::defaults()],
             'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'role' => ['nullable', 'string', 'in:user,admin'],
+            'role' => ['nullable', 'string', 'in:user,admin,student,teacher'],
         ];
     }
 
