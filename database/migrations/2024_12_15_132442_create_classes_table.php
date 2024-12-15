@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('banner');
             $table->string('title');
             $table->text('detail')->nullable();
-            $table->string('access_code')->unique();
+            $table->string('access_code');
             $table->enum('status', ['active', 'archive'])->default('active');
             $table->timestamps();
         });

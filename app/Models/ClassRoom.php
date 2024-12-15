@@ -12,6 +12,8 @@ class ClassRoom extends Model
 
     protected $fillable = [
         'title',
+        'slug',
+        'banner',
         'detail', 
         'access_code',
         'status'

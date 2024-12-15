@@ -35,6 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [UserController::class, 'getProfile']);
     Route::post('/user/profile/update', [UserController::class, 'updateProfile']);
     Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
+    Route::post('/classes', [ClassController::class, 'store']);
+    Route::put('/classes/{class}', [ClassController::class, 'update']);
+    Route::delete('/classes/{class}', [ClassController::class, 'destroy']);
     Route::get('/classes/{slug}/content', [ClassContentController::class, 'index']);
     Route::get('/materials', [MaterialController::class, 'index']); // Untuk mendapatkan daftar materi
     Route::get('/materials/{slug}', [MaterialController::class, 'show']); // Untuk mendapatkan satu materi berdasarkan ID

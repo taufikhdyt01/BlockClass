@@ -6,6 +6,8 @@ use App\Http\Helpers\SlugGenerator;
 use App\Models\ClassRoom;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class ClassResource extends JsonResource
 {
@@ -13,9 +15,9 @@ class ClassResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'slug' => SlugGenerator::generateUniqueSlug($request->title, ClassRoom::class),
+            'slug' => $this->slug,
             'title' => $this->title,
-            'banner' => $this->banner,
+            'banner' => $this->banner ? URL::to(Storage::url($this->banner)) : null,
             'detail' => $this->detail,
             'access_code' => $this->access_code,
             'status' => $this->status,
