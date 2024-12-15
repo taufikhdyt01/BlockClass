@@ -239,8 +239,6 @@ class ClassController extends Controller
     {
         if (empty($url)) return null;
         
-        // Extract the public ID from the Cloudinary URL
-        // Example URL: https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/class-banners/abcdef123456
         $pattern = '/\/v\d+\/(.+)\.\w+$/';
         if (preg_match($pattern, $url, $matches)) {
             return $matches[1];
