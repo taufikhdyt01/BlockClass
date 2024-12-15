@@ -1,0 +1,148 @@
+/* Ganti warna-warna default dengan warna biru e-Block */
+:root {
+    --primary-color: #0066cc; /* Sesuaikan dengan warna biru e-Block */
+    --secondary-color: #004999; /* Warna biru yang lebih gelap untuk hover */
+    --body-color: #718096;
+    --background-color: #f8fafc;
+}
+
+body,
+body *:not(html):not(style):not(br):not(tr):not(code) {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+    position: relative;
+}
+
+/* Header styling */
+.header {
+    padding: 25px 0;
+    text-align: center;
+    background-color: var(--background-color);
+}
+
+.header a {
+    color: var(--primary-color);
+    font-size: 19px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Button styling */
+.button {
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+    -webkit-text-size-adjust: none;
+    padding: 0;
+}
+
+.button-primary {
+    background-color: #0066cc !important;
+    border: 5px solid #0066cc;
+    border-left: 15px solid #0066cc;
+    border-right: 15px solid #0066cc;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 18px !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-width: 150px;
+    text-align: center;
+}
+
+/* Optional: Hover effect */
+.button-primary:hover {
+    background-color: #0052a3 !important;
+    border-color: #0052a3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Content styling */
+.content-cell {
+    max-width: 100vw;
+    padding: 32px;
+}
+
+/* Body styling */
+.body {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--background-color);
+    border-top: 1px solid var(--background-color);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* Paragraph styling */
+p {
+    color: var(--body-color);
+    font-size: 16px;
+    line-height: 1.5em;
+    margin-top: 0;
+    text-align: left;
+}
+
+/* Link styling */
+.anchor-text {
+    color: var(--primary-color);
+}
+
+/* Footer styling */
+.footer {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.footer p {
+    color: #b0adc5;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Logo styling */
+.logo {
+    height: 75px;
+    width: auto;
+    margin: 0 auto;
+}
+
+/* Table styling */
+.inner-body {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 570px;
+    background-color: #ffffff;
+    border-color: #e8e5ef;
+    border-radius: 8px;
+    border-width: 1px;
+    box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015);
+    margin: 0 auto;
+    padding: 0;
+    width: 570px;
+}
+
+/* Wrapper styling */
+.wrapper {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
