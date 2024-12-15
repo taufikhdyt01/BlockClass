@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateClassRequest;
 use App\Http\Resources\ClassContentResource;
 use App\Http\Resources\ClassResource;
 use App\Models\ClassRoom;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -88,8 +89,17 @@ class ClassController extends Controller
             $validated = $request->validated();
 
             if ($request->hasFile('banner')) {
-                $bannerPath = $request->file('banner')->store('class-banners', 'public');
-                $validated['banner'] = $bannerPath;
+                try {
+                    $cloudinaryImage = $request->file('banner')->storeOnCloudinary('class-banners');
+                    $validated['banner'] = $cloudinaryImage->getSecurePath();
+                } catch (\Exception $e) {
+                    \Log::error('Banner upload failed: ' . $e->getMessage());
+                    return response_failed(
+                        message: 'Failed to upload banner', 
+                        data: ['error' => $e->getMessage()], 
+                        status: Response::HTTP_INTERNAL_SERVER_ERROR
+                    );
+                }
             }
 
             $validated['slug'] = SlugGenerator::generateUniqueSlug($request->title, ClassRoom::class);
@@ -97,13 +107,17 @@ class ClassController extends Controller
             $class = ClassRoom::create($validated);
             $class->load('users');
 
-            return response_success(message: 'Class created successfully', data: resource_collection(new ClassResource($class)), status: Response::HTTP_CREATED);
+            return response_success(
+                message: 'Class created successfully', 
+                data: resource_collection(new ClassResource($class)), 
+                status: Response::HTTP_CREATED
+            );
         } catch (\Exception $e) {
-            if (isset($bannerPath) && Storage::disk('public')->exists($bannerPath)) {
-                Storage::disk('public')->delete($bannerPath);
-            }
-
-            return response_failed(message: 'Failed to create class', data: ['error' => $e->getMessage()], status: Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response_failed(
+                message: 'Failed to create class', 
+                data: ['error' => $e->getMessage()], 
+                status: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -113,12 +127,26 @@ class ClassController extends Controller
             $validated = $request->validated();
 
             if ($request->hasFile('banner')) {
-                if ($class->banner && Storage::disk('public')->exists($class->banner)) {
-                    Storage::disk('public')->delete($class->banner);
-                }
+                try {
+                    // Delete old banner from Cloudinary if it exists
+                    if ($class->banner) {
+                        $publicId = $this->getPublicIdFromUrl($class->banner);
+                        if ($publicId) {
+                            Cloudinary::destroy($publicId);
+                        }
+                    }
 
-                $bannerPath = $request->file('banner')->store('class-banners', 'public');
-                $validated['banner'] = $bannerPath;
+                    // Upload new banner
+                    $cloudinaryImage = $request->file('banner')->storeOnCloudinary('class-banners');
+                    $validated['banner'] = $cloudinaryImage->getSecurePath();
+                } catch (\Exception $e) {
+                    \Log::error('Banner update failed: ' . $e->getMessage());
+                    return response_failed(
+                        message: 'Failed to update banner', 
+                        data: ['error' => $e->getMessage()], 
+                        status: Response::HTTP_INTERNAL_SERVER_ERROR
+                    );
+                }
             }
 
             if (isset($validated['title'])) {
@@ -128,13 +156,16 @@ class ClassController extends Controller
             $class->update($validated);
             $class->load('users');
 
-            return response_success(message: 'Class updated successfully', data: resource_collection(new ClassResource($class)));
+            return response_success(
+                message: 'Class updated successfully', 
+                data: resource_collection(new ClassResource($class))
+            );
         } catch (\Exception $e) {
-            if (isset($bannerPath) && Storage::disk('public')->exists($bannerPath)) {
-                Storage::disk('public')->delete($bannerPath);
-            }
-
-            return response_failed(message: 'Failed to update class', data: ['error' => $e->getMessage()], status: Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response_failed(
+                message: 'Failed to update class', 
+                data: ['error' => $e->getMessage()], 
+                status: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -142,11 +173,19 @@ class ClassController extends Controller
     {
         try {
             if ($class->chapters()->exists()) {
-                return response_failed(message: 'Unable to delete class', data: ['error' => 'Class has associated chapters. Please delete chapters first.'], status: Response::HTTP_BAD_REQUEST);
+                return response_failed(
+                    message: 'Unable to delete class', 
+                    data: ['error' => 'Class has associated chapters. Please delete chapters first.'], 
+                    status: Response::HTTP_BAD_REQUEST
+                );
             }
 
-            if ($class->banner && Storage::disk('public')->exists($class->banner)) {
-                Storage::disk('public')->delete($class->banner);
+            // Delete banner from Cloudinary if it exists
+            if ($class->banner) {
+                $publicId = $this->getPublicIdFromUrl($class->banner);
+                if ($publicId) {
+                    Cloudinary::destroy($publicId);
+                }
             }
 
             $class->users()->detach();
@@ -154,7 +193,11 @@ class ClassController extends Controller
 
             return response_success(message: 'Class deleted successfully', status: Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response_failed(message: 'Failed to delete class', data: ['error' => $e->getMessage()], status: Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response_failed(
+                message: 'Failed to delete class', 
+                data: ['error' => $e->getMessage()], 
+                status: Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -187,5 +230,21 @@ class ClassController extends Controller
         } catch (\Exception $e) {
             return response_failed(message: 'Failed to enroll in class', data: ['error' => $e->getMessage()], status: Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * Helper method to extract public ID from Cloudinary URL
+     */
+    private function getPublicIdFromUrl($url)
+    {
+        if (empty($url)) return null;
+        
+        // Extract the public ID from the Cloudinary URL
+        // Example URL: https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/class-banners/abcdef123456
+        $pattern = '/\/v\d+\/(.+)\.\w+$/';
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }

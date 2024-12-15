@@ -17,7 +17,7 @@ class ClassResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
-            'banner' => $this->banner ? URL::to(Storage::url($this->banner)) : null,
+            'banner' => $this->banner ? $this->banner : null,
             'detail' => $this->detail,
             'access_code' => $this->access_code,
             'status' => $this->status,
