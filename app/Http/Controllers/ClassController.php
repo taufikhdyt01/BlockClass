@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Helpers\SlugGenerator;
 use App\Http\Requests\StoreClassRequest;
 use App\Http\Requests\UpdateClassRequest;
+use App\Http\Resources\ClassContentResource;
 use App\Http\Resources\ClassResource;
 use App\Models\ClassRoom;
 use Illuminate\Http\Request;
@@ -47,6 +48,38 @@ class ClassController extends Controller
                 'prev_page_url' => $classes->previousPageUrl(),
             ],
         ]);
+    }
+
+    public function show(Request $request, ClassRoom $class)
+    {
+        $class->load(['chapters.posts' => function($query) {
+            $query->orderBy('order', 'asc');
+        }]);
+
+        $chapters = $class->chapters()->orderBy('order', 'asc')->paginate(10);
+        
+        $responseData = [
+            'class' => [
+                'id' => $class->id,
+                'title' => $class->title,
+                'detail' => $class->detail,
+                'total_students' => $class->users()->count(),
+                'total_chapters' => $class->chapters()->count()
+            ],
+            'chapters' => ClassContentResource::collection($chapters),
+            'pagination' => [
+                'total' => $chapters->total(),
+                'per_page' => $chapters->perPage(),
+                'current_page' => $chapters->currentPage(),
+                'last_page' => $chapters->lastPage(),
+                'from' => $chapters->firstItem(),
+                'to' => $chapters->lastItem(),
+                'next_page_url' => $chapters->nextPageUrl(),
+                'prev_page_url' => $chapters->previousPageUrl(),
+            ],
+        ];
+
+        return response_success('Class content retrieved successfully', $responseData);
     }
 
     public function store(StoreClassRequest $request)

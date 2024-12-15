@@ -10,14 +10,7 @@ class ClassRoom extends Model
     use HasFactory;
     protected $table = 'classes';
 
-    protected $fillable = [
-        'title',
-        'slug',
-        'banner',
-        'detail', 
-        'access_code',
-        'status'
-    ];
+    protected $fillable = ['title', 'slug', 'banner', 'detail', 'access_code', 'status'];
 
     public function users()
     {
@@ -27,5 +20,10 @@ class ClassRoom extends Model
     public function chapters()
     {
         return $this->hasMany(Chapter::class, 'class_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

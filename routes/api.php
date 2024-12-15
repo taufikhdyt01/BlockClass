@@ -10,7 +10,6 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\ClassController;
-use App\Http\Controllers\ClassContentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MaterialController;
 use Illuminate\Http\Request;
@@ -39,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/classes/{class}', [ClassController::class, 'update']);
     Route::delete('/classes/{class}', [ClassController::class, 'destroy']);
     Route::post('/classes/{class}/enroll', [ClassController::class, 'enrollWithAccessCode']);
-    Route::get('/classes/{slug}/content', [ClassContentController::class, 'index']);
+    Route::get('/classes/{class}/content', [ClassController::class, 'show']);
     Route::get('/materials', [MaterialController::class, 'index']); // Untuk mendapatkan daftar materi
     Route::get('/materials/{slug}', [MaterialController::class, 'show']); // Untuk mendapatkan satu materi berdasarkan ID
 });

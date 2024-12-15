@@ -23,6 +23,7 @@ class ClassResource extends JsonResource
             'status' => $this->status,
             'total_students' => $this->users->where('role', 'student')->count(),
             'total_teachers' => $this->users->where('role', 'teacher')->count(),
+            'total_chapters' => $this->chapters()->count(),
             'is_enrolled' => $this->users->contains('id', auth()->id()),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
