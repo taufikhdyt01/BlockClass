@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/classes', [ClassController::class, 'store']);
     Route::put('/classes/{class}', [ClassController::class, 'update']);
     Route::delete('/classes/{class}', [ClassController::class, 'destroy']);
+    Route::post('/classes/{class}/enroll', [ClassController::class, 'enrollWithAccessCode']);
     Route::get('/classes/{slug}/content', [ClassContentController::class, 'index']);
     Route::get('/materials', [MaterialController::class, 'index']); // Untuk mendapatkan daftar materi
     Route::get('/materials/{slug}', [MaterialController::class, 'show']); // Untuk mendapatkan satu materi berdasarkan ID
