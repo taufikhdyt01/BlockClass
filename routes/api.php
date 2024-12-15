@@ -10,7 +10,9 @@ use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ClassContentController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MaterialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [UserController::class, 'getProfile']);
     Route::post('/user/profile/update', [UserController::class, 'updateProfile']);
     Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
+    Route::get('/classes/{slug}/content', [ClassContentController::class, 'index']);
+    Route::get('/materials', [MaterialController::class, 'index']); // Untuk mendapatkan daftar materi
+    Route::get('/materials/{slug}', [MaterialController::class, 'show']); // Untuk mendapatkan satu materi berdasarkan ID
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {

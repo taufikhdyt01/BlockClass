@@ -18,8 +18,7 @@ class DatabaseSeeder extends Seeder
             AdditionalChallengeSeeder::class,
             WebProgrammingChallengeSeeder::class,
             WebEasyChallengeSeeder::class,
-            UsersTableSeeder::class,
-            ClassesTableSeeder::class,
+            UsersTableSeeder::class
         ]);
     }
 }

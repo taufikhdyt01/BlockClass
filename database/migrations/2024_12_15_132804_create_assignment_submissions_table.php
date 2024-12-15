@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('material_id')->constrained()->onDelete('cascade');
+            $table->string('notes')->nullable();
             $table->string('file_path');
             $table->decimal('score', 5, 2)->nullable();
             $table->timestamps();

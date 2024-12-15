@@ -9,6 +9,7 @@ class AssignmentSubmission extends Model
     protected $fillable = [
         'user_id',
         'material_id',
+        'notes',
         'file_path',
         'score'
     ];

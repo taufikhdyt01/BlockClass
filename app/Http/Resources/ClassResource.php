@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\SlugGenerator;
+use App\Models\ClassRoom;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -11,7 +13,9 @@ class ClassResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'slug' => SlugGenerator::generateUniqueSlug($request->title, ClassRoom::class),
             'title' => $this->title,
+            'banner' => $this->banner,
             'detail' => $this->detail,
             'access_code' => $this->access_code,
             'status' => $this->status,

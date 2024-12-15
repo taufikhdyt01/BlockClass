@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->text('content');
+            $table->string('slug')->unique();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

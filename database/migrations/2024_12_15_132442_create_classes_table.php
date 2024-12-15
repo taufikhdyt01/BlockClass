@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->unique();
+            $table->string('banner');
             $table->string('title');
             $table->text('detail')->nullable();
             $table->string('access_code')->unique();
