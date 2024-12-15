@@ -17,6 +17,10 @@ class SlugGenerator
      */
     public static function generateUniqueSlug(string $title, string $model, string $column = 'slug'): string
     {
+        if (empty($title)) {
+            return ''; // Return empty string jika title null/empty
+        }
+
         $slug = Str::slug($title);
         $originalSlug = $slug;
         $count = 1;

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Chapter;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +18,11 @@ class DatabaseSeeder extends Seeder
             AdditionalChallengeSeeder::class,
             WebProgrammingChallengeSeeder::class,
             WebEasyChallengeSeeder::class,
-            UsersTableSeeder::class
+            UsersTableSeeder::class,
+            ClassesTableSeeder::class,
+            ChaptersTableSeeder::class,
+            PostsTableSeeder::class,
+            ClassContentsTableSeeder::class
         ]);
     }
 }

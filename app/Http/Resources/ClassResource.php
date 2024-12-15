@@ -11,9 +11,11 @@ class ClassResource extends JsonResource
 {
     public function toArray($request)
     {
+        $title = $this->title ?? '';
+
         return [
             'id' => $this->id,
-            'slug' => SlugGenerator::generateUniqueSlug($request->title, ClassRoom::class),
+            'slug' => $this->slug,
             'title' => $this->title,
             'banner' => $this->banner,
             'detail' => $this->detail,
